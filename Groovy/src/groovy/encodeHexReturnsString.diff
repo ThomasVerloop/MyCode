@@ -1,0 +1,74 @@
+Index: main/org/codehaus/groovy/runtime/DefaultGroovyMethods.java
+===================================================================
+--- main/org/codehaus/groovy/runtime/DefaultGroovyMethods.java	(revision 15445)
++++ main/org/codehaus/groovy/runtime/DefaultGroovyMethods.java	(working copy)
+@@ -5941,8 +5941,69 @@
+             throw new RuntimeException("Base 64 decode produced byte values > 255"); // TODO: change this exception type
+         }
+     }
++    
++    /**
++     * Encodes a Byte array to a hex string. The hex encoding includes two 
++     * characters for each byte and all letters are lower case.
++     * 
++     * @param data Byte array to be encoded
++     * @return hex encoding of Byte array
++     * @see Integer#toHexString(int)
++     */
++    public static String encodeHex(final Byte[] data) {
++        return encodeHex(DefaultTypeTransformation.convertToByteArray(data));
++    }
+ 
+     /**
++     * Encodes a byte array to a hex string. The hex encoding includes two 
++     * characters for each byte and all letters are lower case.
++     * 
++     * @param data byte array to be encoded
++     * @return hex encoding of byte array
++     * @see Integer#toHexString(int)
++     */
++    public static String encodeHex(final byte[] data) {
++        StringBuilder hexStringBuilder = new StringBuilder(data.length*2);
++        
++        for (int i = 0; i < data.length; i++) {
++            // convert byte into unsigned hex string
++            String hexString = Integer.toHexString(data[i] & 0xFF);
++            
++            // add leading zero if the length of the string is one
++            if (hexString.length() < 2) {
++                hexStringBuilder.append("0");
++            }
++            
++            // write hex string to writer
++            hexStringBuilder.append(hexString);
++        }
++        return hexStringBuilder.toString();
++
++    }
++    
++    /**
++     * Decodes a hex string to a byte array. The hex string can contain either upper
++     * case or lower case letters. 
++     * @param value string to be decoded
++     * @return decoded byte array
++     * @throws NumberFormatException If the string contains an odd number of characters
++     *      or if the characters are not valid hexadecimal values.
++     */
++    public static byte[] decodeHex(final String value) {
++        // if string length is odd then throw exception
++        if (value.length() % 2 != 0) {
++            throw new NumberFormatException("odd number of characters in hex string");
++        }
++        
++        byte[] bytes = new byte[value.length() / 2];
++        for (int i = 0; i < value.length(); i += 2) {
++            bytes[i/2] = (byte)Integer.parseInt(value.substring(i, i + 2), 16);
++        }
++        
++        return bytes;
++    }
++
++    /**
+      * Implements the getAt(int) method for primitve type arrays.
+      *
+      * @param self an array object

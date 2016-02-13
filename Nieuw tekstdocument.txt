@@ -1,0 +1,11 @@
+Tekst document voor spelen met TortoiseGit ....
+
+Nu dat ik de Directory "GitExperiment" een Repository heb gemaakt met het TortoiseGit context menu,
+en ik deze tekstfile heb gecommit, hebt ik deze regel toegevoegd.....
+
+Na Switch/Checkout...
+
+Na adding a ignore for .bak files.
+Zomaar een toevoeging
+hehe
+Nog een toevoeging

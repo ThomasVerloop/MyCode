@@ -1,0 +1,9 @@
+import groovy.util.GroovyTestCase
+class <%=test_suite %> extends GroovyTestCase {
+  <% test_cases.each{ tc -> println "\tvoid ${tc}() {intialise() } " }%>
+  void testAll() {
+     <% test_cases.each{ tc -> println "\t${tc}();" }%>
+  	println "Suite <%=test_suite %> is finished"
+  }	
+  // this sums it up for this suite
+}
